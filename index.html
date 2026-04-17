@@ -173,15 +173,33 @@ scene.add(bg);
 const galaxy = new THREE.Group(); scene.add(galaxy);
 const phrases = ["Pinchecha ✨", " Hermosa 💛", "Mi Bebe", "Mi Cielito 🌌", "Hermosota ✨", "Mi Infinita ♾️", "Mi Todo", "Me Encantas 🥰", "Te Amo Carito❤️  ", "Te Amo❤️", "Mi Canción Favorita 🎶", "Única 😊", "Mi Reina 👑", "Mi Amor", "Mi Mundo", "Mi Luz 🌠", "Mi Niña", "Mi Tesoro💛", "Mi Paz", "Mi Eterna", "Mi Sueño", "Mi Pensamiento Constante", "Mi Bombom", "Mi Diosa", "Te Amo Infinitamente ♾️", "Mi casualidad favorita", "Mi persona favorita", "  Mi siempre, aunque todavía no seamos nada  ", "Mi debilidad que no quiero superar", "Mi ilusión mas real", "Mi voz favorita", "Desde que dijiste mi nombre por primera vez", "Desde lo simple que se volvió especial", "Desde aquel cargador prestado", "Tu forma de llamarme con emoción", "Mi Bella Doncella", "Mi Linda Princesa", "Te elegiría sin pensarlo", "Con ese detallito de Pikachu⚡", "Con algo de Stitch💙", "Gracias por hablarme primero✨", "Mi BlancaNieves👑", "Te Quiero Carito❤️", "Me Gustas Carito❤️"];
 const phraseCount = Math.max(phrases.length * 6, 180);
-const arms = 5, radius = 120, maxH = 22;
+const arms = 5, radius = 130, maxH = 22;
 
 function makeTextTexture(text, size=48){
-  const c=document.createElement('canvas'); c.width=1024; c.height=128;
-  const g=c.getContext('2d'); g.clearRect(0,0,c.width,c.height);
-  g.font='800 '+size+'px -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial';
-  g.textAlign='center'; g.textBaseline='middle';
-  g.shadowColor='rgba(210,140,255,0.95)'; g.shadowBlur=24;
-  g.fillStyle='rgba(255,240,255,0.98)'; g.fillText(text,c.width/2,c.height/2);
+  const c = document.createElement('canvas');
+  const g = c.getContext('2d');
+
+  g.font = '800 ' + size + 'px -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial';
+
+  // 🔥 medir el ancho real del texto
+  const textWidth = g.measureText(text).width;
+
+  // 👉 ajustar canvas automáticamente
+  c.width = textWidth + 100;  // espacio extra
+  c.height = size * 2;
+
+  // volver a aplicar estilo (porque resetea)
+  g.font = '800 ' + size + 'px -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial';
+  g.textAlign = 'center';
+  g.textBaseline = 'middle';
+
+  // brillo
+  g.shadowColor = 'rgba(255,255,255,1)';
+  g.shadowBlur = 20;
+
+  g.fillStyle = 'rgba(255,255,255,1)';
+  g.fillText(text, c.width/2, c.height/2);
+
   return new THREE.CanvasTexture(c);
 }
 
@@ -207,17 +225,17 @@ for(let i=0;i<phraseCount;i++){
   const dist = Math.pow(t, 0.8) * radius;
 
   // 🔥 ESPIRAL REAL (clave)
-  const spin = 6;
-  const angle = armAngle + dist * 0.15 + t * spin;
+  const spin = 8;
+  const angle = armAngle + dist * 0.08 + t * spin;
 
   // 🔥 ligera variación para que no sea líneas rectas
-  const randomOffset = (Math.random() - 0.5) * 2;
+  const randomOffset = (Math.random() - 0.5) * (dist * 0.1);
 
   const x = Math.cos(angle) * (dist + randomOffset);
   const z = Math.sin(angle) * (dist + randomOffset);
 
   // altura leve
-  const y = (Math.random() - 0.5) * maxH * 0.4;
+  const y = (Math.random() - 0.5) * maxH * 0.3;
 
   spr.position.set(x,y,z);
   spr.scale.set(20,2.6,1);
